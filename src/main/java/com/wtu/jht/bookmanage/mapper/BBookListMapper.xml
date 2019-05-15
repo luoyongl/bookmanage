@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtu.jht.bookmanage.dao.BBookListMapper" >
+  <resultMap id="BaseResultMap" type="com.wtu.jht.bookmanage.modal.BBookList" >
+    <id column="f_id" property="fId" jdbcType="INTEGER" />
+    <result column="f_book_number" property="fBookNumber" jdbcType="VARCHAR" />
+    <result column="f_book_name" property="fBookName" jdbcType="VARCHAR" />
+    <result column="f_book_publish" property="fBookPublish" jdbcType="VARCHAR" />
+    <result column="f_book_isbn" property="fBookIsbn" jdbcType="VARCHAR" />
+    <result column="f_book_editor" property="fBookEditor" jdbcType="VARCHAR" />
+    <result column="f_book_edtion" property="fBookEdtion" jdbcType="VARCHAR" />
+    <result column="f_book_price" property="fBookPrice" jdbcType="VARCHAR" />
+    <result column="f_book_type" property="fBookType" jdbcType="VARCHAR" />
+    <result column="f_book_iswrite" property="fBookIswrite" jdbcType="BIT" />
+    <result column="f_write_id" property="fWriteId" jdbcType="INTEGER" />
+    <result column="f_book_url" property="fBookUrl" jdbcType="VARCHAR" />
+    <result column="f_creator_id" property="fCreatorId" jdbcType="INTEGER" />
+    <result column="f_update_time" property="fUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="f_operator_id" property="fOperatorId" jdbcType="INTEGER" />
+    <result column="f_delete_flag" property="fDeleteFlag" jdbcType="BIT" />
+    <result column="f_state" property="fState" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    f_id, f_book_number, f_book_name, f_book_publish, f_book_isbn, f_book_editor, f_book_edtion, 
+    f_book_price, f_book_type, f_book_iswrite, f_write_id, f_book_url, f_creator_id, 
+    f_update_time, f_operator_id, f_delete_flag, f_state
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.wtu.jht.bookmanage.modal.BBookListExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_book_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_book_list
+    where f_id = #{fId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_book_list
+    where f_id = #{fId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wtu.jht.bookmanage.modal.BBookListExample" >
+    delete from b_book_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wtu.jht.bookmanage.modal.BBookList" >
+    <selectKey resultType="java.lang.Integer" keyProperty="fId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_book_list (f_book_number, f_book_name, f_book_publish, 
+      f_book_isbn, f_book_editor, f_book_edtion, 
+      f_book_price, f_book_type, f_book_iswrite, 
+      f_write_id, f_book_url, f_creator_id, 
+      f_update_time, f_operator_id, f_delete_flag, 
+      f_state)
+    values (#{fBookNumber,jdbcType=VARCHAR}, #{fBookName,jdbcType=VARCHAR}, #{fBookPublish,jdbcType=VARCHAR}, 
+      #{fBookIsbn,jdbcType=VARCHAR}, #{fBookEditor,jdbcType=VARCHAR}, #{fBookEdtion,jdbcType=VARCHAR}, 
+      #{fBookPrice,jdbcType=VARCHAR}, #{fBookType,jdbcType=VARCHAR}, #{fBookIswrite,jdbcType=BIT}, 
+      #{fWriteId,jdbcType=INTEGER}, #{fBookUrl,jdbcType=VARCHAR}, #{fCreatorId,jdbcType=INTEGER}, 
+      #{fUpdateTime,jdbcType=TIMESTAMP}, #{fOperatorId,jdbcType=INTEGER}, #{fDeleteFlag,jdbcType=BIT}, 
+      #{fState,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wtu.jht.bookmanage.modal.BBookList" >
+    <selectKey resultType="java.lang.Integer" keyProperty="fId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_book_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fBookNumber != null" >
+        f_book_number,
+      </if>
+      <if test="fBookName != null" >
+        f_book_name,
+      </if>
+      <if test="fBookPublish != null" >
+        f_book_publish,
+      </if>
+      <if test="fBookIsbn != null" >
+        f_book_isbn,
+      </if>
+      <if test="fBookEditor != null" >
+        f_book_editor,
+      </if>
+      <if test="fBookEdtion != null" >
+        f_book_edtion,
+      </if>
+      <if test="fBookPrice != null" >
+        f_book_price,
+      </if>
+      <if test="fBookType != null" >
+        f_book_type,
+      </if>
+      <if test="fBookIswrite != null" >
+        f_book_iswrite,
+      </if>
+      <if test="fWriteId != null" >
+        f_write_id,
+      </if>
+      <if test="fBookUrl != null" >
+        f_book_url,
+      </if>
+      <if test="fCreatorId != null" >
+        f_creator_id,
+      </if>
+      <if test="fUpdateTime != null" >
+        f_update_time,
+      </if>
+      <if test="fOperatorId != null" >
+        f_operator_id,
+      </if>
+      <if test="fDeleteFlag != null" >
+        f_delete_flag,
+      </if>
+      <if test="fState != null" >
+        f_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fBookNumber != null" >
+        #{fBookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookName != null" >
+        #{fBookName,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookPublish != null" >
+        #{fBookPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookIsbn != null" >
+        #{fBookIsbn,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookEditor != null" >
+        #{fBookEditor,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookEdtion != null" >
+        #{fBookEdtion,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookPrice != null" >
+        #{fBookPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookType != null" >
+        #{fBookType,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookIswrite != null" >
+        #{fBookIswrite,jdbcType=BIT},
+      </if>
+      <if test="fWriteId != null" >
+        #{fWriteId,jdbcType=INTEGER},
+      </if>
+      <if test="fBookUrl != null" >
+        #{fBookUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fCreatorId != null" >
+        #{fCreatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fUpdateTime != null" >
+        #{fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fOperatorId != null" >
+        #{fOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fDeleteFlag != null" >
+        #{fDeleteFlag,jdbcType=BIT},
+      </if>
+      <if test="fState != null" >
+        #{fState,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wtu.jht.bookmanage.modal.BBookListExample" resultType="java.lang.Integer" >
+    select count(*) from b_book_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_book_list
+    <set >
+      <if test="record.fId != null" >
+        f_id = #{record.fId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fBookNumber != null" >
+        f_book_number = #{record.fBookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookName != null" >
+        f_book_name = #{record.fBookName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookPublish != null" >
+        f_book_publish = #{record.fBookPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookIsbn != null" >
+        f_book_isbn = #{record.fBookIsbn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookEditor != null" >
+        f_book_editor = #{record.fBookEditor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookEdtion != null" >
+        f_book_edtion = #{record.fBookEdtion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookPrice != null" >
+        f_book_price = #{record.fBookPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookType != null" >
+        f_book_type = #{record.fBookType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fBookIswrite != null" >
+        f_book_iswrite = #{record.fBookIswrite,jdbcType=BIT},
+      </if>
+      <if test="record.fWriteId != null" >
+        f_write_id = #{record.fWriteId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fBookUrl != null" >
+        f_book_url = #{record.fBookUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fCreatorId != null" >
+        f_creator_id = #{record.fCreatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fUpdateTime != null" >
+        f_update_time = #{record.fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fOperatorId != null" >
+        f_operator_id = #{record.fOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fDeleteFlag != null" >
+        f_delete_flag = #{record.fDeleteFlag,jdbcType=BIT},
+      </if>
+      <if test="record.fState != null" >
+        f_state = #{record.fState,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_book_list
+    set f_id = #{record.fId,jdbcType=INTEGER},
+      f_book_number = #{record.fBookNumber,jdbcType=VARCHAR},
+      f_book_name = #{record.fBookName,jdbcType=VARCHAR},
+      f_book_publish = #{record.fBookPublish,jdbcType=VARCHAR},
+      f_book_isbn = #{record.fBookIsbn,jdbcType=VARCHAR},
+      f_book_editor = #{record.fBookEditor,jdbcType=VARCHAR},
+      f_book_edtion = #{record.fBookEdtion,jdbcType=VARCHAR},
+      f_book_price = #{record.fBookPrice,jdbcType=VARCHAR},
+      f_book_type = #{record.fBookType,jdbcType=VARCHAR},
+      f_book_iswrite = #{record.fBookIswrite,jdbcType=BIT},
+      f_write_id = #{record.fWriteId,jdbcType=INTEGER},
+      f_book_url = #{record.fBookUrl,jdbcType=VARCHAR},
+      f_creator_id = #{record.fCreatorId,jdbcType=INTEGER},
+      f_update_time = #{record.fUpdateTime,jdbcType=TIMESTAMP},
+      f_operator_id = #{record.fOperatorId,jdbcType=INTEGER},
+      f_delete_flag = #{record.fDeleteFlag,jdbcType=BIT},
+      f_state = #{record.fState,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wtu.jht.bookmanage.modal.BBookList" >
+    update b_book_list
+    <set >
+      <if test="fBookNumber != null" >
+        f_book_number = #{fBookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookName != null" >
+        f_book_name = #{fBookName,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookPublish != null" >
+        f_book_publish = #{fBookPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookIsbn != null" >
+        f_book_isbn = #{fBookIsbn,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookEditor != null" >
+        f_book_editor = #{fBookEditor,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookEdtion != null" >
+        f_book_edtion = #{fBookEdtion,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookPrice != null" >
+        f_book_price = #{fBookPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookType != null" >
+        f_book_type = #{fBookType,jdbcType=VARCHAR},
+      </if>
+      <if test="fBookIswrite != null" >
+        f_book_iswrite = #{fBookIswrite,jdbcType=BIT},
+      </if>
+      <if test="fWriteId != null" >
+        f_write_id = #{fWriteId,jdbcType=INTEGER},
+      </if>
+      <if test="fBookUrl != null" >
+        f_book_url = #{fBookUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fCreatorId != null" >
+        f_creator_id = #{fCreatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fUpdateTime != null" >
+        f_update_time = #{fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fOperatorId != null" >
+        f_operator_id = #{fOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fDeleteFlag != null" >
+        f_delete_flag = #{fDeleteFlag,jdbcType=BIT},
+      </if>
+      <if test="fState != null" >
+        f_state = #{fState,jdbcType=TINYINT},
+      </if>
+    </set>
+    where f_id = #{fId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wtu.jht.bookmanage.modal.BBookList" >
+    update b_book_list
+    set f_book_number = #{fBookNumber,jdbcType=VARCHAR},
+      f_book_name = #{fBookName,jdbcType=VARCHAR},
+      f_book_publish = #{fBookPublish,jdbcType=VARCHAR},
+      f_book_isbn = #{fBookIsbn,jdbcType=VARCHAR},
+      f_book_editor = #{fBookEditor,jdbcType=VARCHAR},
+      f_book_edtion = #{fBookEdtion,jdbcType=VARCHAR},
+      f_book_price = #{fBookPrice,jdbcType=VARCHAR},
+      f_book_type = #{fBookType,jdbcType=VARCHAR},
+      f_book_iswrite = #{fBookIswrite,jdbcType=BIT},
+      f_write_id = #{fWriteId,jdbcType=INTEGER},
+      f_book_url = #{fBookUrl,jdbcType=VARCHAR},
+      f_creator_id = #{fCreatorId,jdbcType=INTEGER},
+      f_update_time = #{fUpdateTime,jdbcType=TIMESTAMP},
+      f_operator_id = #{fOperatorId,jdbcType=INTEGER},
+      f_delete_flag = #{fDeleteFlag,jdbcType=BIT},
+      f_state = #{fState,jdbcType=TINYINT}
+    where f_id = #{fId,jdbcType=INTEGER}
+  </update>
+</mapper>

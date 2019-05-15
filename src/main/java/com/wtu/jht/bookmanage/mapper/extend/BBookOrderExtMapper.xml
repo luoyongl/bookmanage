@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtu.jht.bookmanage.dao.extend.BBookOrderExtMapper">
+    <resultMap id="BaseResultMap" type="com.wtu.jht.bookmanage.modal.vo.BBookOrderVO">
+        <id column="f_id" property="fId" jdbcType="INTEGER" />
+        <result column="f_book_id" property="fBookId" jdbcType="INTEGER" />
+        <result column="f_order_number" property="fOrderNumber" jdbcType="INTEGER" />
+        <result column="f_create_time" property="fCreateTime" jdbcType="TIMESTAMP" />
+        <result column="f_creator_id" property="fCreatorId" jdbcType="INTEGER" />
+        <result column="f_update_time" property="fUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="f_operator_id" property="fOperatorId" jdbcType="INTEGER" />
+        <result column="f_delete_flag" property="fDeleteFlag" jdbcType="BIT" />
+
+        <result column="level" property="level" jdbcType="VARCHAR" />
+        <result column="f_book_name" property="fBookName" jdbcType="VARCHAR" />
+        <result column="f_book_price" property="fBookPrice" jdbcType="VARCHAR" />
+        <result column="f_book_iswrite" property="fBookIswrite" jdbcType="BIT" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="f_number" property="responsitory" jdbcType="INTEGER" />
+        <result column="f_state" property="fState" jdbcType="VARCHAR" />
+    </resultMap>
+   <select id="queryList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT b_ord.*,
+        b_b.f_book_name,
+        b_b.f_book_iswrite,
+        b_b.f_book_price,
+        t_u.real_name,
+        t_u.`level`,
+        b_res.f_number,
+        b_a.f_state
+        FROM b_book_order b_ord
+        LEFT JOIN b_apply_book b_a
+            ON b_ord.f_book_id=b_a.f_id
+        LEFT JOIN b_book_list b_b
+            ON b_a.f_book_id=b_b.f_id
+        LEFT JOIN t_user t_u
+            ON b_ord.f_creator_id=t_u.f_id
+        LEFT JOIN b_responsitory b_res
+            ON b_b.f_id=b_res.f_book_id
+   </select>
+</mapper>

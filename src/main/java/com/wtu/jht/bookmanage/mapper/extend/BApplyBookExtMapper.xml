@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtu.jht.bookmanage.dao.extend.BApplyBookExtMapper">
+    <resultMap id="BaseResultMap" type="com.wtu.jht.bookmanage.modal.vo.BApplyBookVO">
+        <id column="f_id" property="fId" jdbcType="INTEGER"/>
+        <result column="f_user_id" property="fUserId" jdbcType="INTEGER"/>
+        <result column="f_book_id" property="fBookId" jdbcType="VARCHAR"/>
+        <result column="f_apply_year" property="fApplyYear" jdbcType="VARCHAR"/>
+        <result column="f_class" property="fClass" jdbcType="VARCHAR"/>
+        <result column="f_course_name" property="fCourseName" jdbcType="VARCHAR"/>
+        <result column="f_major" property="fMajor" jdbcType="VARCHAR"/>
+        <result column="f_course_attribute" property="fCourseAttribute" jdbcType="VARCHAR"/>
+        <result column="f_remark" property="fRemark" jdbcType="VARCHAR"/>
+        <result column="f_state" property="fState" jdbcType="VARCHAR"/>
+        <result column="f_creator_id" property="fCreatorId" jdbcType="INTEGER"/>
+        <result column="f_update_time" property="fUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="f_operator_id" property="fOperatorId" jdbcType="INTEGER"/>
+        <result column="f_delete_flag" property="fDeleteFlag" jdbcType="BIT"/>
+
+        <result column="f_book_number" property="fBookNumber" jdbcType="VARCHAR"/>
+        <result column="f_book_name" property="fBookName" jdbcType="VARCHAR"/>
+        <result column="f_book_publish" property="fBookPublish" jdbcType="VARCHAR"/>
+        <result column="f_book_isbn" property="fBookIsbn" jdbcType="VARCHAR"/>
+        <result column="f_book_editor" property="fBookEditor" jdbcType="VARCHAR"/>
+        <result column="f_book_edtion" property="fBookEdtion" jdbcType="VARCHAR"/>
+        <result column="f_book_price" property="fBookPrice" jdbcType="VARCHAR"/>
+        <result column="f_book_type" property="fBookType" jdbcType="VARCHAR"/>
+        <result column="f_book_iswrite" property="fBookIswrite" jdbcType="BIT"/>
+        <result column="f_write_id" property="fWriteId" jdbcType="INTEGER"/>
+        <result column="level" property="college" jdbcType="VARCHAR"/>
+        <result column="real_name" property="username" jdbcType="VARCHAR"/>
+        <result column="choose_id" property="chooseId" jdbcType="INTEGER"/>
+        <result column="number" property="number" jdbcType="INTEGER"/>
+
+        <result column="f_grade" property="fGrade" jdbcType="INTEGER" />
+        <result column="f_remark" property="fRemark" jdbcType="VARCHAR" />
+        <result column="f_list" property="fList" jdbcType="VARCHAR" />
+        <result column="eva_id" property="EvaId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectApplyResult" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        select b_a.*,
+        b_b.f_book_name,
+        b_b.f_book_isbn,
+        b_b.f_book_price,
+        b_b.f_book_publish,
+        b_b.f_book_type,
+        b_b.f_book_edtion,
+        b_b.f_book_editor,
+        b_b.f_book_number,
+        b_b.f_book_iswrite,
+        COUNT(b_s.f_id) as number
+        from b_apply_book b_a
+        LEFT JOIN b_book_list b_b
+        on b_a.f_book_id=b_b.f_id
+        LEFT JOIN b_student_book b_s
+            on b_a.f_book_id=b_s.f_book_id and b_s.f_delete_flag=0
+        WHERE
+        b_a.f_delete_flag=0
+        <if test="currentUser!=null and currentUser!=''">
+            AND b_a.f_user_id=${currentUser}
+        </if>
+        GROUP BY b_a.f_id
+    </select>
+
+    <select id="selectResultForManager" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        select b_a.*,
+        b_b.f_book_name,
+        b_b.f_book_isbn,
+        b_b.f_book_price,
+        b_b.f_book_publish,
+        b_b.f_book_type,
+        b_b.f_book_edtion,
+        b_b.f_book_editor,
+        b_b.f_book_number,
+        b_b.f_book_iswrite,
+        t_u.`level`,
+        t_u.`real_name`
+        from b_apply_book b_a
+        LEFT JOIN b_book_list b_b
+        on b_a.f_book_id=b_b.f_id
+        LEFT JOIN t_user t_u
+        ON b_a.f_user_id=t_u.f_id
+        WHERE
+        b_a.f_delete_flag=0
+        <if test="waitReviewState!=null and waitReviewState!=''">
+            AND b_a.f_state=${waitReviewState}
+        </if>
+        <if test="reviewHistory!=null and 'true'.toString()== reviewHistory.toString()">
+            AND b_a.f_state!=1
+        </if>
+        GROUP BY b_a.f_id
+    </select>
+
+
+    <select id="selectResultForStudent" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        SELECT b_a.f_course_name,
+            b_a.f_book_id,
+			b_a.f_apply_year,
+			b_s.f_id AS choose_id,
+			b_a.f_state,
+			b_b.*
+            FROM b_apply_book b_a
+            LEFT JOIN b_book_list b_b
+              on b_a.f_book_id=b_b.f_id
+            <if test="current_user!=null and current_user!=''">
+                LEFT JOIN b_student_book b_s
+                on ${current_user}= b_s.f_user_id and b_a.f_book_id=b_s.f_book_id and b_s.f_delete_flag=0
+            </if>
+            WHERE b_a.f_delete_flag=0 and (b_a.f_state=2 or b_a.f_state>2)
+            <if test="class!=null and class!=''">
+                and FIND_IN_SET(#{class},b_a.f_class)
+            </if >
+
+    </select>
+
+    <select id="selectResultExitOrder" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        SELECT b_a.f_course_name,
+        b_a.f_book_id,
+        b_a.f_id,
+        b_a.f_apply_year,
+        b_a.f_state,
+        b_s.f_id AS choose_id,
+        b_b.f_book_name,
+        b_b.f_book_editor,
+        b_b.f_book_edtion,
+        COUNT(b_s.f_id) as number
+        FROM b_apply_book b_a
+        LEFT JOIN b_book_list b_b
+        on b_a.f_book_id=b_b.f_id
+        LEFT JOIN b_student_book b_s
+        on b_a.f_book_id=b_s.f_book_id and b_s.f_delete_flag=0
+        WHERE b_a.f_delete_flag=0 and (b_a.f_state=9 or b_a.f_state=7)
+        <if test="class!=null and class!=''">
+            and FIND_IN_SET(#{class},b_a.f_class)
+        </if >
+    </select>
+
+
+    <select id="selectResultForEvalute" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        SELECT b_b.*,
+        b_a.f_course_name,
+        b_a.f_apply_year,
+        b_a.f_book_id,
+        b_e.f_grade,
+        b_e.f_list,
+        b_e.f_remark,
+        b_e.f_id as eva_id,
+        b_e.f_user_id
+        FROM b_book_list b_b
+        LEFT JOIN b_student_book b_s
+            ON b_b.f_id=b_s.f_book_id and b_s.f_user_id=${current_user}
+        LEFT JOIN b_apply_book b_a
+            ON b_a.f_book_id=b_b.f_id and FIND_IN_SET(#{class},b_a.f_class) and b_a.f_book_id=b_s.f_book_id
+        LEFT JOIN b_evaluate b_e
+            ON b_s.f_book_id=b_e.f_book_id and b_e.f_user_id=${current_user}
+--         join t_user t_u
+--             on b_e.f_user_id=${current_user}
+         where b_s.f_delete_flag=0
+    </select>
+
+
+    <select id="EvaluteForTeacher" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+            SELECT b_e.f_book_id,
+            AVG(b_e.f_grade) as f_grade,
+            b_b.f_book_name
+            FROM `b_evaluate` b_e
+            LEFT JOIN b_student_book b_s
+             ON b_s.f_book_id=b_e.f_book_id
+            LEFT JOIN b_book_list b_b
+                ON b_b.f_id=b_e.f_book_id
+            GROUP BY b_e.f_book_id
+    </select>
+</mapper>
+

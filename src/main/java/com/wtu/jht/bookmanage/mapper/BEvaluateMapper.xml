@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtu.jht.bookmanage.dao.BEvaluateMapper" >
+  <resultMap id="BaseResultMap" type="com.wtu.jht.bookmanage.modal.BEvaluate" >
+    <id column="f_id" property="fId" jdbcType="INTEGER" />
+    <result column="f_book_id" property="fBookId" jdbcType="INTEGER" />
+    <result column="f_grade" property="fGrade" jdbcType="INTEGER" />
+    <result column="f_remark" property="fRemark" jdbcType="VARCHAR" />
+    <result column="f_user_id" property="fUserId" jdbcType="INTEGER" />
+    <result column="f_list" property="fList" jdbcType="VARCHAR" />
+    <result column="f_create_time" property="fCreateTime" jdbcType="TIMESTAMP" />
+    <result column="f_update_time" property="fUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    f_id, f_book_id, f_grade, f_remark, f_user_id, f_list, f_create_time, f_update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.wtu.jht.bookmanage.modal.BEvaluateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_evaluate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_evaluate
+    where f_id = #{fId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_evaluate
+    where f_id = #{fId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wtu.jht.bookmanage.modal.BEvaluateExample" >
+    delete from b_evaluate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wtu.jht.bookmanage.modal.BEvaluate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="fId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_evaluate (f_book_id, f_grade, f_remark, 
+      f_user_id, f_list, f_create_time, 
+      f_update_time)
+    values (#{fBookId,jdbcType=INTEGER}, #{fGrade,jdbcType=INTEGER}, #{fRemark,jdbcType=VARCHAR}, 
+      #{fUserId,jdbcType=INTEGER}, #{fList,jdbcType=VARCHAR}, #{fCreateTime,jdbcType=TIMESTAMP}, 
+      #{fUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wtu.jht.bookmanage.modal.BEvaluate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="fId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fBookId != null" >
+        f_book_id,
+      </if>
+      <if test="fGrade != null" >
+        f_grade,
+      </if>
+      <if test="fRemark != null" >
+        f_remark,
+      </if>
+      <if test="fUserId != null" >
+        f_user_id,
+      </if>
+      <if test="fList != null" >
+        f_list,
+      </if>
+      <if test="fCreateTime != null" >
+        f_create_time,
+      </if>
+      <if test="fUpdateTime != null" >
+        f_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fBookId != null" >
+        #{fBookId,jdbcType=INTEGER},
+      </if>
+      <if test="fGrade != null" >
+        #{fGrade,jdbcType=INTEGER},
+      </if>
+      <if test="fRemark != null" >
+        #{fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="fUserId != null" >
+        #{fUserId,jdbcType=INTEGER},
+      </if>
+      <if test="fList != null" >
+        #{fList,jdbcType=VARCHAR},
+      </if>
+      <if test="fCreateTime != null" >
+        #{fCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fUpdateTime != null" >
+        #{fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wtu.jht.bookmanage.modal.BEvaluateExample" resultType="java.lang.Integer" >
+    select count(*) from b_evaluate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_evaluate
+    <set >
+      <if test="record.fId != null" >
+        f_id = #{record.fId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fBookId != null" >
+        f_book_id = #{record.fBookId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fGrade != null" >
+        f_grade = #{record.fGrade,jdbcType=INTEGER},
+      </if>
+      <if test="record.fRemark != null" >
+        f_remark = #{record.fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fUserId != null" >
+        f_user_id = #{record.fUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fList != null" >
+        f_list = #{record.fList,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fCreateTime != null" >
+        f_create_time = #{record.fCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fUpdateTime != null" >
+        f_update_time = #{record.fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_evaluate
+    set f_id = #{record.fId,jdbcType=INTEGER},
+      f_book_id = #{record.fBookId,jdbcType=INTEGER},
+      f_grade = #{record.fGrade,jdbcType=INTEGER},
+      f_remark = #{record.fRemark,jdbcType=VARCHAR},
+      f_user_id = #{record.fUserId,jdbcType=INTEGER},
+      f_list = #{record.fList,jdbcType=VARCHAR},
+      f_create_time = #{record.fCreateTime,jdbcType=TIMESTAMP},
+      f_update_time = #{record.fUpdateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wtu.jht.bookmanage.modal.BEvaluate" >
+    update b_evaluate
+    <set >
+      <if test="fBookId != null" >
+        f_book_id = #{fBookId,jdbcType=INTEGER},
+      </if>
+      <if test="fGrade != null" >
+        f_grade = #{fGrade,jdbcType=INTEGER},
+      </if>
+      <if test="fRemark != null" >
+        f_remark = #{fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="fUserId != null" >
+        f_user_id = #{fUserId,jdbcType=INTEGER},
+      </if>
+      <if test="fList != null" >
+        f_list = #{fList,jdbcType=VARCHAR},
+      </if>
+      <if test="fCreateTime != null" >
+        f_create_time = #{fCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fUpdateTime != null" >
+        f_update_time = #{fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where f_id = #{fId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wtu.jht.bookmanage.modal.BEvaluate" >
+    update b_evaluate
+    set f_book_id = #{fBookId,jdbcType=INTEGER},
+      f_grade = #{fGrade,jdbcType=INTEGER},
+      f_remark = #{fRemark,jdbcType=VARCHAR},
+      f_user_id = #{fUserId,jdbcType=INTEGER},
+      f_list = #{fList,jdbcType=VARCHAR},
+      f_create_time = #{fCreateTime,jdbcType=TIMESTAMP},
+      f_update_time = #{fUpdateTime,jdbcType=TIMESTAMP}
+    where f_id = #{fId,jdbcType=INTEGER}
+  </update>
+</mapper>

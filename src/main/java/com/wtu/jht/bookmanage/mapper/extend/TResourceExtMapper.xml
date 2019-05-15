@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtu.jht.bookmanage.dao.extend.TResourceExtMapper">
+    <resultMap id="BaseResultMap" type="com.wtu.jht.bookmanage.modal.TResource">
+        <id column="f_id" property="fId" jdbcType="INTEGER"/>
+        <result column="f_resource_classification" property="fResourceClassification" jdbcType="TINYINT"/>
+        <result column="f_resource_name" property="fResourceName" jdbcType="VARCHAR"/>
+        <result column="f_parent_resource" property="fParentResource" jdbcType="INTEGER"/>
+        <result column="f_resource_path" property="fResourcePath" jdbcType="VARCHAR"/>
+        <result column="f_permission_code" property="fPermissionCode" jdbcType="VARCHAR"/>
+        <result column="f_sort" property="fSort" jdbcType="TINYINT"/>
+        <result column="f_create_time" property="fCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="f_creator_id" property="fCreatorId" jdbcType="INTEGER"/>
+        <result column="f_update_time" property="fUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="f_operator_id" property="fOperatorId" jdbcType="INTEGER"/>
+        <result column="f_delete_flag" property="fDeleteFlag" jdbcType="BIT"/>
+        <result column="f_resource_ico" property="fResourceIco" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select r.f_id,r.f_resource_classification, r.f_resource_name, r.f_parent_resource, r.f_resource_path, r.f_permission_code, r.f_resource_ico
+        from t_resource r
+        left join t_role_and_resource_link rrl on rrl.f_resources_id = r.f_id
+        left join t_role_and_user_association rua on rua.f_role_id = rrl.f_role_id
+        left join t_user u on u.f_id = rua.f_user_id
+        where r.f_delete_flag = 0 and u.f_id = #{userId} and u.f_delete_flag = 0
+        order by r.f_sort
+    </select>
+</mapper>

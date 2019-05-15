@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtu.jht.bookmanage.dao.extend.BResponsitoryExtMapper" >
+    <resultMap id="BaseResultMap" type="com.wtu.jht.bookmanage.modal.vo.BResponsitoryVO" >
+        <id column="f_id" property="fId" jdbcType="INTEGER" />
+        <result column="f_book_id" property="fBookId" jdbcType="INTEGER" />
+        <result column="f_number" property="fNumber" jdbcType="INTEGER" />
+        <result column="f_creator_id" property="fCreatorId" jdbcType="INTEGER" />
+        <result column="f_update_time" property="fUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="f_operator_id" property="fOperatorId" jdbcType="INTEGER" />
+        <result column="f_delete_flag" property="fDeleteFlag" jdbcType="BIT" />
+
+        <result column="f_book_name" property="fBookName" jdbcType="VARCHAR" />
+        <result column="f_book_editor" property="fBookEditor" jdbcType="VARCHAR" />
+        <result column="f_book_publish" property="fBookPublish" jdbcType="VARCHAR" />
+        <result column="f_book_iswrite" property="fBookIswrite" jdbcType="BIT" />
+        <result column="f_book_price" property="fBookPrice" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="LIST" resultMap="BaseResultMap">
+       select b_res.*,
+        b_b.f_book_name,
+        b_b.f_book_publish,
+        b_b.f_book_editor,
+        b_b.f_book_iswrite,
+        b_b.f_book_price
+       from b_responsitory b_res
+       left  join b_book_list b_b
+       on b_res.f_book_id=b_b.f_id
+    </select>
+</mapper>

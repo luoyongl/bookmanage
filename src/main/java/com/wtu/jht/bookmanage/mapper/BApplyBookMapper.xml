@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wtu.jht.bookmanage.dao.BApplyBookMapper" >
+  <resultMap id="BaseResultMap" type="com.wtu.jht.bookmanage.modal.BApplyBook" >
+    <id column="f_id" property="fId" jdbcType="INTEGER" />
+    <result column="f_user_id" property="fUserId" jdbcType="INTEGER" />
+    <result column="f_book_id" property="fBookId" jdbcType="VARCHAR" />
+    <result column="f_apply_year" property="fApplyYear" jdbcType="VARCHAR" />
+    <result column="f_class" property="fClass" jdbcType="VARCHAR" />
+    <result column="f_course_name" property="fCourseName" jdbcType="VARCHAR" />
+    <result column="f_major" property="fMajor" jdbcType="VARCHAR" />
+    <result column="f_course_attribute" property="fCourseAttribute" jdbcType="VARCHAR" />
+    <result column="f_remark" property="fRemark" jdbcType="VARCHAR" />
+    <result column="f_state" property="fState" jdbcType="VARCHAR" />
+    <result column="f_creator_id" property="fCreatorId" jdbcType="INTEGER" />
+    <result column="f_update_time" property="fUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="f_operator_id" property="fOperatorId" jdbcType="INTEGER" />
+    <result column="f_delete_flag" property="fDeleteFlag" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    f_id, f_user_id, f_book_id, f_apply_year, f_class, f_course_name, f_major, f_course_attribute, 
+    f_remark, f_state, f_creator_id, f_update_time, f_operator_id, f_delete_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.wtu.jht.bookmanage.modal.BApplyBookExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_apply_book
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_apply_book
+    where f_id = #{fId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_apply_book
+    where f_id = #{fId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wtu.jht.bookmanage.modal.BApplyBookExample" >
+    delete from b_apply_book
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wtu.jht.bookmanage.modal.BApplyBook" >
+    <selectKey resultType="java.lang.Integer" keyProperty="fId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_apply_book (f_user_id, f_book_id, f_apply_year, 
+      f_class, f_course_name, f_major, 
+      f_course_attribute, f_remark, f_state, 
+      f_creator_id, f_update_time, f_operator_id, 
+      f_delete_flag)
+    values (#{fUserId,jdbcType=INTEGER}, #{fBookId,jdbcType=VARCHAR}, #{fApplyYear,jdbcType=VARCHAR}, 
+      #{fClass,jdbcType=VARCHAR}, #{fCourseName,jdbcType=VARCHAR}, #{fMajor,jdbcType=VARCHAR}, 
+      #{fCourseAttribute,jdbcType=VARCHAR}, #{fRemark,jdbcType=VARCHAR}, #{fState,jdbcType=VARCHAR}, 
+      #{fCreatorId,jdbcType=INTEGER}, #{fUpdateTime,jdbcType=TIMESTAMP}, #{fOperatorId,jdbcType=INTEGER}, 
+      #{fDeleteFlag,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wtu.jht.bookmanage.modal.BApplyBook" >
+    <selectKey resultType="java.lang.Integer" keyProperty="fId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_apply_book
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fUserId != null" >
+        f_user_id,
+      </if>
+      <if test="fBookId != null" >
+        f_book_id,
+      </if>
+      <if test="fApplyYear != null" >
+        f_apply_year,
+      </if>
+      <if test="fClass != null" >
+        f_class,
+      </if>
+      <if test="fCourseName != null" >
+        f_course_name,
+      </if>
+      <if test="fMajor != null" >
+        f_major,
+      </if>
+      <if test="fCourseAttribute != null" >
+        f_course_attribute,
+      </if>
+      <if test="fRemark != null" >
+        f_remark,
+      </if>
+      <if test="fState != null" >
+        f_state,
+      </if>
+      <if test="fCreatorId != null" >
+        f_creator_id,
+      </if>
+      <if test="fUpdateTime != null" >
+        f_update_time,
+      </if>
+      <if test="fOperatorId != null" >
+        f_operator_id,
+      </if>
+      <if test="fDeleteFlag != null" >
+        f_delete_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fUserId != null" >
+        #{fUserId,jdbcType=INTEGER},
+      </if>
+      <if test="fBookId != null" >
+        #{fBookId,jdbcType=VARCHAR},
+      </if>
+      <if test="fApplyYear != null" >
+        #{fApplyYear,jdbcType=VARCHAR},
+      </if>
+      <if test="fClass != null" >
+        #{fClass,jdbcType=VARCHAR},
+      </if>
+      <if test="fCourseName != null" >
+        #{fCourseName,jdbcType=VARCHAR},
+      </if>
+      <if test="fMajor != null" >
+        #{fMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="fCourseAttribute != null" >
+        #{fCourseAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="fRemark != null" >
+        #{fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="fState != null" >
+        #{fState,jdbcType=VARCHAR},
+      </if>
+      <if test="fCreatorId != null" >
+        #{fCreatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fUpdateTime != null" >
+        #{fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fOperatorId != null" >
+        #{fOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fDeleteFlag != null" >
+        #{fDeleteFlag,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wtu.jht.bookmanage.modal.BApplyBookExample" resultType="java.lang.Integer" >
+    select count(*) from b_apply_book
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_apply_book
+    <set >
+      <if test="record.fId != null" >
+        f_id = #{record.fId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fUserId != null" >
+        f_user_id = #{record.fUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fBookId != null" >
+        f_book_id = #{record.fBookId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fApplyYear != null" >
+        f_apply_year = #{record.fApplyYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fClass != null" >
+        f_class = #{record.fClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fCourseName != null" >
+        f_course_name = #{record.fCourseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fMajor != null" >
+        f_major = #{record.fMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fCourseAttribute != null" >
+        f_course_attribute = #{record.fCourseAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fRemark != null" >
+        f_remark = #{record.fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fState != null" >
+        f_state = #{record.fState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fCreatorId != null" >
+        f_creator_id = #{record.fCreatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fUpdateTime != null" >
+        f_update_time = #{record.fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fOperatorId != null" >
+        f_operator_id = #{record.fOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fDeleteFlag != null" >
+        f_delete_flag = #{record.fDeleteFlag,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_apply_book
+    set f_id = #{record.fId,jdbcType=INTEGER},
+      f_user_id = #{record.fUserId,jdbcType=INTEGER},
+      f_book_id = #{record.fBookId,jdbcType=VARCHAR},
+      f_apply_year = #{record.fApplyYear,jdbcType=VARCHAR},
+      f_class = #{record.fClass,jdbcType=VARCHAR},
+      f_course_name = #{record.fCourseName,jdbcType=VARCHAR},
+      f_major = #{record.fMajor,jdbcType=VARCHAR},
+      f_course_attribute = #{record.fCourseAttribute,jdbcType=VARCHAR},
+      f_remark = #{record.fRemark,jdbcType=VARCHAR},
+      f_state = #{record.fState,jdbcType=VARCHAR},
+      f_creator_id = #{record.fCreatorId,jdbcType=INTEGER},
+      f_update_time = #{record.fUpdateTime,jdbcType=TIMESTAMP},
+      f_operator_id = #{record.fOperatorId,jdbcType=INTEGER},
+      f_delete_flag = #{record.fDeleteFlag,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wtu.jht.bookmanage.modal.BApplyBook" >
+    update b_apply_book
+    <set >
+      <if test="fUserId != null" >
+        f_user_id = #{fUserId,jdbcType=INTEGER},
+      </if>
+      <if test="fBookId != null" >
+        f_book_id = #{fBookId,jdbcType=VARCHAR},
+      </if>
+      <if test="fApplyYear != null" >
+        f_apply_year = #{fApplyYear,jdbcType=VARCHAR},
+      </if>
+      <if test="fClass != null" >
+        f_class = #{fClass,jdbcType=VARCHAR},
+      </if>
+      <if test="fCourseName != null" >
+        f_course_name = #{fCourseName,jdbcType=VARCHAR},
+      </if>
+      <if test="fMajor != null" >
+        f_major = #{fMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="fCourseAttribute != null" >
+        f_course_attribute = #{fCourseAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="fRemark != null" >
+        f_remark = #{fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="fState != null" >
+        f_state = #{fState,jdbcType=VARCHAR},
+      </if>
+      <if test="fCreatorId != null" >
+        f_creator_id = #{fCreatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fUpdateTime != null" >
+        f_update_time = #{fUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fOperatorId != null" >
+        f_operator_id = #{fOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="fDeleteFlag != null" >
+        f_delete_flag = #{fDeleteFlag,jdbcType=BIT},
+      </if>
+    </set>
+    where f_id = #{fId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wtu.jht.bookmanage.modal.BApplyBook" >
+    update b_apply_book
+    set f_user_id = #{fUserId,jdbcType=INTEGER},
+      f_book_id = #{fBookId,jdbcType=VARCHAR},
+      f_apply_year = #{fApplyYear,jdbcType=VARCHAR},
+      f_class = #{fClass,jdbcType=VARCHAR},
+      f_course_name = #{fCourseName,jdbcType=VARCHAR},
+      f_major = #{fMajor,jdbcType=VARCHAR},
+      f_course_attribute = #{fCourseAttribute,jdbcType=VARCHAR},
+      f_remark = #{fRemark,jdbcType=VARCHAR},
+      f_state = #{fState,jdbcType=VARCHAR},
+      f_creator_id = #{fCreatorId,jdbcType=INTEGER},
+      f_update_time = #{fUpdateTime,jdbcType=TIMESTAMP},
+      f_operator_id = #{fOperatorId,jdbcType=INTEGER},
+      f_delete_flag = #{fDeleteFlag,jdbcType=BIT}
+    where f_id = #{fId,jdbcType=INTEGER}
+  </update>
+</mapper>
