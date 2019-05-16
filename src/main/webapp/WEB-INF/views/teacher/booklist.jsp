@@ -47,7 +47,6 @@
         {field: 'fBookPrice', title: '价格(元)', width: 85},
         {field: '', title: '操作', toolbar: '#myToolbarDemo', align: 'center'}
     ]];
-
   /*  layui.config({
         base: '${ctx}/static/layui/',
     });*/

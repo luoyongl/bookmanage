@@ -27,16 +27,25 @@
 <div class="layui-tab">
     <ul class="layui-tab-title">
         <li class="layui-this">学院信息</li>
-        <li>课程开设</li>
+        <li>课程类别</li>
+        <li>教材管理</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
+            <div class="demoTable">
+                <button class="layui-btn colege_add" data-type="add">新增</button>
+            </div>
             <table id="table_college" class="layui-table" lay-filter="college"></table>
         </div>
         <div class="layui-tab-item">
+            <div class="demoTable">
+                <button class="layui-btn course_add" data-type="add">新增</button>
+            </div>
             <table id="table_course" class="layui-table" lay-filter="course"></table>
         </div>
-        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">
+            <table class="layui-table"  lay-filter="test" id="bookList"></table>
+        </div>
         <div class="layui-tab-item">内容4</div>
         <div class="layui-tab-item">内容5</div>
     </div>
@@ -68,8 +77,18 @@
     }).extend({
         treetable: 'treetable-lay/treetable'
     });
-
-    var cols=[[
+    var cols_book = [[
+        {field: 'fBookNumber', title: '编号', sort: 'true', width: 100},
+        {field: 'fBookName', title: '图书名称', sort: 'true', width: 180},
+        {field: 'fBookPublish', title: '出版社', sort: 'true', width: 150},
+        {field: 'fBookIsbn', title: 'ISBN', width: 150,},
+        {field: 'fBookEditor', title: '主编'},
+        {field: 'fBookEdtion', title: '版次', sort: 'true', width: 100},
+        {field: 'fBookType', title: '性质', width: 100},
+        {field: 'fBookPrice', title: '价格(元)', width: 85},
+        {field: '', title: '操作', toolbar: '#myToolbarDemo', align: 'center'}
+    ]];
+    var cols = [[
         {type: 'numbers'},
         {field: 'fId', title: 'id', hide: 'true'},
         {field: 'fDictionaryContent', title: '名称'},
@@ -100,23 +119,48 @@
                 treeShowName: 'fDictionaryContent',//以树形式显示的字段
                 elem: '#table_college',
                 url: '${ctx}/manager/baseDate/dict?code=college',
-                cols:cols
+                cols: cols
             });
         }
 
         collegetable();
 
-        treetable.render({
-            treeColIndex: 2,          // treetable新增参数
-            treeSpid: 0,             // treetable新增参数
-            treeIdName: 'fId',       // treetable新增参数
-            treePidName: 'fParentNode',     // treetable新增参数
-            //treeDefaultClose: true,   // treetable新增参数
-            //  treeLinkage: true,        // treetable新增参数
-            treeShowName: 'fDictionaryContent',//以树形式显示的字段
-            elem: '#table_course',
-            url: '${ctx}/manager/baseDate/dict?code=course',
-            cols:cols
+        var coursetable = function () {
+            treetable.render({
+                treeColIndex: 2,          // treetable新增参数
+                treeSpid: 0,             // treetable新增参数
+                treeIdName: 'fId',       // treetable新增参数
+                treePidName: 'fParentNode',     // treetable新增参数
+                //treeDefaultClose: true,   // treetable新增参数
+                //  treeLinkage: true,        // treetable新增参数
+                treeShowName: 'fDictionaryContent',//以树形式显示的字段
+                elem: '#table_course',
+                url: '${ctx}/manager/baseDate/dict?code=course',
+                cols: cols
+            });
+        }
+        coursetable();
+
+
+        table.render({
+            elem: '#bookList',
+            url: '${ctx}/teacher/showBookList?type=1',
+            cols: cols_book,
+            page: true, //开启分页，true为开启，false为关闭
+            even: true, //隔行背景
+            loading: true,//加载等待
+            //toolbar: '#toolbarDemo',
+            toolbar: 'default',
+            //cellMinWidth: 100, //全局定义常规单元格的最小宽度
+            // done: doneCallback,
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            }
         });
 
         //监听学院信息按钮
@@ -138,8 +182,34 @@
                     break;
             }
         })
+        table.on('tool(course)', function (obj) {
+            var d = obj.data;
+            console.log(d);//可以打印出当前行的信息
+            switch (obj.event) {
+                //$("#reset").trigger("click");
+                case 'add':
+                    reset();
+                    add(obj.data);
+                    break;
+                case 'delete':
+                    del(obj.data);
+                    break;
+                case 'update':
+                    showContext(obj.data);
+                    edit(obj.data);
+                    break;
+            }
+        })
 
-        function add(e) {
+        $('.demoTable .colege_add').on('click', function () {
+            open("college");
+        });
+
+        $('.demoTable .course_add').on('click', function () {
+            open("course");
+        });
+
+        function open(str) {
             layer.open({
                 type: 1,
                 content: $('#collegeForm')
@@ -148,17 +218,18 @@
                     $.ajax({
                         url: '${ctx}/manager/baseDate/add',
                         type: 'post',
-                        data: $("#collegeForm").serialize() + '&fParentNode=' + e.fId + "&fDictionaryCode=" + e.fDictionaryCode,
+                        data: $("#collegeForm").serialize() + '&fParentNode=0' + "&fDictionaryCode=" + str,
                         async: false,
                         success: function x(result) {
-                        if (result.status == 200) {
-                            $("form").css("display", "none");
-                            layer.closeAll();
-                            collegetable();
-                            layer.msg("操作成功")
+                            if (result.status == 200) {
+                                $("form").css("display", "none");
+                                layer.closeAll();
+                                collegetable();
+                                coursetable();
+                                layer.msg(result.msg)
+                            }
                         }
-                    }
-                })
+                    })
                 }
                 , btn2: function (index, layero) {
                     $("form").css("display", "none");//按钮【按钮二】的回调 return false 开启该代码可禁止点击该按钮关闭
@@ -185,6 +256,7 @@
                                 $("form").css("display", "none");
                                 layer.closeAll();
                                 collegetable();
+                                coursetable();
                                 layer.msg(result.msg)
                             }
                         }
@@ -203,13 +275,14 @@
         function del(e) {
             layer.confirm('是否确认选择删除此选项？', {
                 btn: ['确认', '取消'] //可以无限个按钮
-            }, function(index, layero){
-               $.getJSON("${ctx}/manager/baseDate/del",{fId:e.fId},function (result) {
-                   layer.closeAll();
-                   collegetable();
-                   layer.msg(result.msg);
-               })
-            }, function(index){
+            }, function (index, layero) {
+                $.getJSON("${ctx}/manager/baseDate/del", {fId: e.fId}, function (result) {
+                    layer.closeAll();
+                    collegetable();
+                    coursetable();
+                    layer.msg(result.msg);
+                })
+            }, function (index) {
                 //按钮【按钮二】的回调
             });
         }
@@ -224,13 +297,14 @@
                     $.ajax({
                         url: '${ctx}/manager/baseDate/edit',
                         type: 'post',
-                        data: $("#collegeForm").serialize()+"&fId="+e.fId,
+                        data: $("#collegeForm").serialize() + "&fId=" + e.fId,
                         async: false,
                         success: function x(result) {
                             if (result.status == 200) {
                                 $("form").css("display", "none");
                                 layer.closeAll();
                                 collegetable();
+                                coursetable();
                                 layer.msg(result.msg)
                             }
                         }
@@ -244,7 +318,7 @@
                 }
             });
         }
-        
+
         function showContext(e) {
             $("#collegeForm input[name='fDictionaryContent']").val(e.fDictionaryContent);
             $("#collegeForm input[name='number']").val(e.number);

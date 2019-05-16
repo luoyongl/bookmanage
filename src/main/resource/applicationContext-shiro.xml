@@ -32,6 +32,7 @@
                 /account/login=anon
                 /account/logout=logout
                 /static/**=anon
+                /upload/**=anon
                 /**=authc
             </value>
         </property>

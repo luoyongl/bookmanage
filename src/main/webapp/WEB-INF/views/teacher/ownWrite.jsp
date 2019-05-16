@@ -34,6 +34,9 @@
         {{# } }}
     </div>
 </script>
+<script type="text/html" id="fileToolbarDemo">
+    <a href="{{d.fBookUrl}}" target="view_window" style="color: #FFFFFF">查看</a>
+</script>
 <script type="text/html" id="formTime">
     {{  dateFormat(d.fUpdateTime) }}
 </script>
@@ -51,7 +54,7 @@
         {field: 'fBookName', title: '图书名称', sort: 'true' },
         {field: 'fUpdateTime', title: '申请日期', sort: 'true',templet: '#formTime'},
         {field: 'fState', title: '申请状态', sort: 'true', toolbar: '#stateToolbarDemo',align:'center'},
-        {field: 'fBookUrl', title: '附件查看'},
+        {field: 'fBookUrl', title: '附件查看',toolbar: '#fileToolbarDemo'},
         {field: '', title: '操作', toolbar: '#myToolbarDemo', align: 'center'}
     ]];
     layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function () {
@@ -207,13 +210,10 @@
                     $.ajax({
                         url: "${ctx}/teacher/editOwnBook",
                         type: "POST",
-                        data: fs1,
+                        data: fs2,
                         async : false,
                         contentType: false,   //jax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件
                         processData: false,   //当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
-                        error : function(request) {
-                            parent.layer.alert("网络超时");
-                        },
                         success: function (data) {
                             $("#applyOwnBookForm").css("display","none");
                         }
@@ -284,6 +284,12 @@
         <label class="layui-form-label">教材名称</label>
         <div class="layui-input-block">
             <input type="text" name="fBookName" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">主编</label>
+        <div class="layui-input-block">
+            <input type="text" name="fBookEditor" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
