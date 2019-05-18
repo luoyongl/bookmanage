@@ -16,6 +16,54 @@
 </head>
 <body>
 
+
+<%--<div class="container">
+    <ul class="time-horizontal">
+        <li><b></b>成立</li>
+        <li><b></b>合作</li>
+        <li><b></b>发展</li>
+        <li><b></b>共赢</li>
+    </ul>
+</div>--%>
+
+<ul class="layui-timeline" style="padding-left: 40px;">
+    <li class="layui-timeline-item">
+        <i class="layui-icon layui-timeline-axis"></i>
+        <div class="layui-timeline-content layui-text">
+            <div class="layui-timeline-title">提交申请</div>
+        </div>
+    </li>
+    <li class="layui-timeline-item">
+        <i class="layui-icon layui-timeline-axis"></i>
+        <div class="layui-timeline-content layui-text">
+            <div class="layui-timeline-title">教学秘书审核</div>
+        </div>
+    </li>
+    <li class="layui-timeline-item">
+        <i class="layui-icon layui-timeline-axis"></i>
+        <div class="layui-timeline-content layui-text">
+            <div class="layui-timeline-title">学生选取</div>
+        </div>
+    </li>
+    <li class="layui-timeline-item">
+        <i class="layui-icon layui-timeline-axis"></i>
+        <div class="layui-timeline-content layui-text">
+            <div class="layui-timeline-title">确认订单</div>
+        </div>
+    </li>
+    <li class="layui-timeline-item">
+        <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
+        <div class="layui-timeline-content layui-text">
+            <div class="layui-timeline-title">发放及领取</div>
+        </div>
+    </li>
+    <li class="layui-timeline-item">
+        <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
+        <div class="layui-timeline-content layui-text">
+            <div class="layui-timeline-title">结束</div>
+        </div>
+    </li>
+</ul>
 <%--搜索区域--%>
 <div class="demoTable" style="float: left">
     <div class="layui-inline">
@@ -31,6 +79,8 @@
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <%@include file="../common/common_js.jsp" %>
+<script type="text/html" id="myToolbarDemo">
+</script>
 <script type="text/html" id="myToolbarDemo">
     <div class="layui-btn-container">
         {{# if(d.fState == '1'){ }}

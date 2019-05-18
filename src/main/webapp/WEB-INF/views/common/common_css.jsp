@@ -55,4 +55,39 @@
         padding: 0px 5px 10px 0;
         font-size: 0;
     }
+
+
+
+    .layui-timeline-item {
+        display: inline-block;
+        position: relative;
+        width: 150px;
+    }
+
+    .layui-timeline-title {
+        position: relative;
+        margin-top: 25px;
+        margin-left: -40px;
+    }
+
+    .layui-timeline-title{
+        color: #ffffff;
+    }
+
+    .layui-timeline-item:before {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 10px;
+        z-index: 0;
+        width: 100%;
+        height: 1px;
+    }
+
+    .layui-timeline-axis {
+
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+    }
 </style>
