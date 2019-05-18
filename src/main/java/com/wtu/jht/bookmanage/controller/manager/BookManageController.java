@@ -2,7 +2,7 @@ package com.wtu.jht.bookmanage.controller.manager;
 
 import com.wtu.jht.bookmanage.enums.ApplyBookEnum;
 import com.wtu.jht.bookmanage.modal.BApplyBook;
-import com.wtu.jht.bookmanage.modal.TDictionary;
+import com.wtu.jht.bookmanage.modal.BBookList;
 import com.wtu.jht.bookmanage.modal.TUser;
 import com.wtu.jht.bookmanage.openapi.constant.Constant;
 import com.wtu.jht.bookmanage.openapi.pojo.ManageResult;
@@ -146,6 +146,45 @@ public class BookManageController {
     }
 
 
+    /**
+     * 新增教材
+     * @param bBookList
+     * @return
+     */
+    @RequestMapping("/addBook")
+    @ResponseBody
+    public ManageResult addBook(BBookList bBookList){
+        bBookList.setfBookIswrite(false);
+        return ManageResult.ok(bBookListService.insertSelective(bBookList));
 
+    }
+
+
+    /**
+     * 更新教材
+     * @param bBookList
+     * @return
+     */
+    @RequestMapping("/updateBook")
+    @ResponseBody
+    public ManageResult updateBook(BBookList bBookList){
+        return ManageResult.ok(bBookListService.updateByPrimaryKeySelective(bBookList));
+
+    }
+
+    /**
+     * 删除教材
+     * @param
+     * @return
+     */
+    @RequestMapping("/delBook")
+    @ResponseBody
+    public ManageResult delBook(Integer fId){
+        BBookList bBookList=new BBookList();
+        bBookList.setfId(fId);
+        bBookList.setfDeleteFlag(true);
+        return ManageResult.ok(bBookListService.updateByPrimaryKeySelective(bBookList));
+
+    }
 
 }

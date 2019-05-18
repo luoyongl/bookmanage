@@ -44,7 +44,7 @@
             <table id="table_course" class="layui-table" lay-filter="course"></table>
         </div>
         <div class="layui-tab-item">
-            <table class="layui-table"  lay-filter="test" id="bookList"></table>
+            <table class="layui-table"  lay-filter="book" id="bookList"></table>
         </div>
         <div class="layui-tab-item">内容4</div>
         <div class="layui-tab-item">内容5</div>
@@ -71,22 +71,29 @@
         {{# } }}
     </div>
 </script>
+<script type="text/html" id="addToolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="toolbar_add">新增教材</button>
+    </div>
+</script>
 <script>
     layui.config({
         base: '${ctx}/static/treetable-lay/module/'
     }).extend({
         treetable: 'treetable-lay/treetable'
     });
+
+    var Flag=1;
     var cols_book = [[
-        {field: 'fBookNumber', title: '编号', sort: 'true', width: 100},
-        {field: 'fBookName', title: '图书名称', sort: 'true', width: 180},
-        {field: 'fBookPublish', title: '出版社', sort: 'true', width: 150},
-        {field: 'fBookIsbn', title: 'ISBN', width: 150,},
-        {field: 'fBookEditor', title: '主编'},
-        {field: 'fBookEdtion', title: '版次', sort: 'true', width: 100},
-        {field: 'fBookType', title: '性质', width: 100},
-        {field: 'fBookPrice', title: '价格(元)', width: 85},
-        {field: '', title: '操作', toolbar: '#myToolbarDemo', align: 'center'}
+        {field: 'fBookNumber', title: '编号', sort: 'true', width: 80},
+        {field: 'fBookName', title: '图书名称', sort: 'true',width: 200},
+        {field: 'fBookPublish', title: '出版社', sort: 'true',width: 100},
+        {field: 'fBookIsbn', title: 'ISBN', width: 100},
+        {field: 'fBookEditor', title: '主编',width: 100},
+        {field: 'fBookEdtion', title: '版次', sort: 'true',width: 100},
+        {field: 'fBookType', title: '性质',width: 100},
+        {field: 'fBookPrice', title: '价格(元)',width: 100},
+        {field: '', title: '操作', toolbar: '#myToolbarDemo', align: 'center',width: 200}
     ]];
     var cols = [[
         {type: 'numbers'},
@@ -142,7 +149,7 @@
         coursetable();
 
 
-        table.render({
+        var $table=table.render({
             elem: '#bookList',
             url: '${ctx}/teacher/showBookList?type=1',
             cols: cols_book,
@@ -150,7 +157,7 @@
             even: true, //隔行背景
             loading: true,//加载等待
             //toolbar: '#toolbarDemo',
-            toolbar: 'default',
+            toolbar: '#addToolbarDemo',
             //cellMinWidth: 100, //全局定义常规单元格的最小宽度
             // done: doneCallback,
             parseData: function (res) { //res 即为原始返回的数据
@@ -201,6 +208,26 @@
             }
         })
 
+        table.on('tool(book)', function (obj) {
+            var d = obj.data;
+            console.log(d);//可以打印出当前行的信息
+            switch (obj.event) {
+                //$("#reset").trigger("click");
+                case 'update':
+                    editBook(obj.data);
+                    break;
+                case 'delete':
+                    del(obj.data);
+                    break;
+            }
+        })
+        table.on('toolbar(book)', function (obj) {
+            switch (obj.event) {
+                case 'toolbar_add':
+                    add_book(obj.data);
+                    break;
+            }
+        })
         $('.demoTable .colege_add').on('click', function () {
             open("college");
         });
@@ -276,16 +303,56 @@
             layer.confirm('是否确认选择删除此选项？', {
                 btn: ['确认', '取消'] //可以无限个按钮
             }, function (index, layero) {
-                $.getJSON("${ctx}/manager/baseDate/del", {fId: e.fId}, function (result) {
+                $.getJSON("${ctx}/manager/review/delBook", {fId: e.fId}, function (result) {
                     layer.closeAll();
-                    collegetable();
-                    coursetable();
+                    $table.reload();
                     layer.msg(result.msg);
                 })
             }, function (index) {
                 //按钮【按钮二】的回调
             });
         }
+
+
+        //添加教材操作
+        function add_book(e) {
+            layer.open({
+                type: 1
+                , content: $('#bookform')
+                , area:['500px']
+                , cancel: function () {
+                    $("form").css("display", "none");//右上角关闭回调return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+        }
+
+        form.on('submit(applyBook)', function(data){
+            var url=""
+            if (Flag==1){
+                url='${ctx}/manager/review/addBook';
+            }else {
+                url='${ctx}/manager/review/updateBook';
+            }
+            $.ajax({
+                url:url,
+                type:'post',
+                data:$("#bookform").serialize(),
+                success:function (result) {
+                    if (result.status==200){
+                        layer.closeAll();
+                        layer.msg("操作成功");
+                        $table.reload();
+                        Flag=1;
+                    }
+                },
+                error:function () {
+                    layer.closeAll();
+                }
+
+            })
+            $("form").css("display","none");
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
 
         //编辑操作
         function edit(e) {
@@ -319,10 +386,30 @@
             });
         }
 
+
+        //编辑操作
+        function editBook(e) {
+            Flag=2;
+            showBookContext(e);
+            layer.open({
+                type: 1,
+                content: $('#bookform')
+                , cancel: function () {
+                    $("form").css("display", "none");//右上角关闭回调return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+        }
         function showContext(e) {
             $("#collegeForm input[name='fDictionaryContent']").val(e.fDictionaryContent);
             $("#collegeForm input[name='number']").val(e.number);
         }
+
+        function showBookContext(e) {
+            for (var i in e){
+                $("#bookform input[name='"+i+"']").val(e[i]);
+            }
+        }
+
 
         function reset() {
             $(".reset").trigger("click");
@@ -348,6 +435,67 @@
         <button type="reset" class="reset layui-btn layui-btn-primary">重置</button>
     </div>
 </form>
+<form id="bookform" class="layui-form" style="display: none"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
 
+    <div class="layui-form-item" style="display: none">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input required type="text" name="fId" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div><div class="layui-form-item">
+        <label class="layui-form-label">教材编号</label>
+        <div class="layui-input-block">
+            <input required type="text" name="fBookNumber" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">教材名称</label>
+        <div class="layui-input-block">
+            <input required type="text" name="fBookName" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">出版社</label>
+        <div class="layui-input-block">
+            <input required type="text" name="fBookPublish" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">ISBN</label>
+        <div class="layui-input-block">
+            <input required type="text" name="fBookIsbn" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">主编</label>
+        <div class="layui-input-block">
+            <input required type="text" name="fBookEditor" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">版次</label>
+        <div class="layui-input-block">
+            <input required type="text" name="fBookEdtion" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">价格</label>
+        <div class="layui-input-block">
+            <input required type="text" name="fBookPrice" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">图书类型</label>
+        <div class="layui-input-block">
+            <input required lay-verify="required"  type="text" name="fBookType" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="applyBook">立即提交</button>
+            <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
 </body>
 </html>

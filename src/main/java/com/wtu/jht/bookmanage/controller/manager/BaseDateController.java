@@ -1,7 +1,6 @@
 package com.wtu.jht.bookmanage.controller.manager;
 
 import com.wtu.jht.bookmanage.modal.TDictionary;
-import com.wtu.jht.bookmanage.openapi.BaseController;
 import com.wtu.jht.bookmanage.openapi.pojo.ManageResult;
 import com.wtu.jht.bookmanage.service.BApplyBookService;
 import com.wtu.jht.bookmanage.service.BBookListService;
@@ -12,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @date ：Created in 2019/4/4 13:13

@@ -102,6 +102,7 @@
 			b_a.f_apply_year,
 			b_s.f_id AS choose_id,
 			b_a.f_state,
+			b_a.f_course_attribute,
 			b_b.*
             FROM b_apply_book b_a
             LEFT JOIN b_book_list b_b
@@ -127,8 +128,8 @@
         b_s.f_id AS choose_id,
         b_b.f_book_name,
         b_b.f_book_editor,
-        b_b.f_book_edtion,
-        COUNT(b_s.f_id) as number
+        b_b.f_book_edtion
+--         COUNT(b_s.f_id) as number
         FROM b_apply_book b_a
         LEFT JOIN b_book_list b_b
         on b_a.f_book_id=b_b.f_id

@@ -49,7 +49,16 @@ public class EvaluteController {
     }
 
 
-
+    /**
+     * 评价列表
+     * @param page
+     * @param limit
+     * @param searchText
+     * @param sortOrder
+     * @param sortName
+     * @param session
+     * @return
+     */
     @RequestMapping("/evaluteList")
     @ResponseBody
     public ManageResult showBookList(@RequestParam(defaultValue = "1", required = false) Integer page,
@@ -68,6 +77,12 @@ public class EvaluteController {
     }
 
 
+    /**
+     * 添加评价记录
+     * @param bEvaluate
+     * @param session
+     * @return
+     */
     @RequestMapping("/addevalute")
     @ResponseBody
     public ManageResult addEvaluet(BEvaluate bEvaluate,
