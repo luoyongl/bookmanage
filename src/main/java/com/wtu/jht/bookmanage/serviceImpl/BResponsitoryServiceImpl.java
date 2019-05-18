@@ -62,6 +62,18 @@ public class BResponsitoryServiceImpl extends ParentServiceImpl<BResponsitory> i
         }
     }
 
+
+    @Override
+    public Boolean selectByBookId(Integer fBookId) {
+       BResponsitoryExample example=new BResponsitoryExample();
+       example.createCriteria().andFBookIdEqualTo(fBookId);
+       if (bResponsitoryMapper.selectByExample(example).size()>0){
+           return true;
+       }else {
+           return false;
+       }
+    }
+
     @Override
     protected DBInterface<BResponsitory> getDao() {
         return bResponsitoryMapper;

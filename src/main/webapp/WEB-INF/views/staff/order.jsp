@@ -108,6 +108,7 @@
             switch(obj.event){
                 //$("#reset").trigger("click");
                 case 'add':
+                    addorder(obj.data);
                     break;
                 case 'update':
                     update(obj.data);
@@ -143,12 +144,44 @@
             });
         }
 
+
+        //审核通过操作
+        function addorder(e) {
+            layer.open({
+                type: 1,
+                content: $('#collegeForm')
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    $.ajax({
+                        url: '${ctx}/staff/updateRes',
+                        type: 'post',
+                        data: $("#collegeForm").serialize() + '&fId=' + e.fId+'&fBookId=' + e.fBookId,
+                        async: false,
+                        success: function x(result) {
+                            if (result.status == 200) {
+                                $("form").css("display", "none");
+                                layer.closeAll();
+                                $table.reload();
+                                layer.msg(result.msg)
+                            }
+                        }
+                    })
+                }
+                , btn2: function (index, layero) {
+                    $("form").css("display", "none");//按钮【按钮二】的回调 return false 开启该代码可禁止点击该按钮关闭
+                }
+                , cancel: function () {
+                    $("form").css("display", "none");//右上角关闭回调return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+        }
     });//layui.use结束
 
 </script>
 
 </body>
 <form id="collegeForm" style="display: none"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-            <textarea name="fRemark" placeholder="请输入内容" class="layui-textarea"></textarea>
+    <input name="addNumber" placeholder="请输入购买数量" class="layui-input"></input>
 </form>
+
 </html>

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wtu.jht.bookmanage.dao.BApplyBookMapper;
 import com.wtu.jht.bookmanage.dao.extend.BApplyBookExtMapper;
+import com.wtu.jht.bookmanage.enums.ApplyBookEnum;
 import com.wtu.jht.bookmanage.modal.BApplyBook;
 import com.wtu.jht.bookmanage.modal.BApplyBookExample;
 import com.wtu.jht.bookmanage.modal.BBookList;
@@ -17,12 +18,17 @@ import com.wtu.jht.bookmanage.service.BApplyBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class BApplyBookServiceImpl extends ParentServiceImpl<BApplyBook> implements BApplyBookService {
 
+
+    @Autowired
+    private BApplyBookService bApplyBookService;
 
     private final BApplyBookMapper bApplyBookMapper;
 
@@ -55,10 +61,23 @@ public class BApplyBookServiceImpl extends ParentServiceImpl<BApplyBook> impleme
     @Override
     public PageInfo<BApplyBookVO> QueryPage(Map<String, Object> paramMap) throws BizException {
         try {
+            List<BApplyBookVO> res=null;
+
             BApplyBookExample example=new BApplyBookExample();
             example.createCriteria().andFDeleteFlagEqualTo(false);
             PageHelper.startPage((Integer) paramMap.get("pageNumber"),(Integer) paramMap.get("pageSize"));
             List<BApplyBookVO> dataList = bApplyBookExtMapper.selectApplyResult(paramMap);
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String currentTime = sdf.format(new Date());
+            String bookDte=(String)paramMap.get("bookdate");
+            if (sdf.parse(bookDte).getTime()<sdf.parse(currentTime).getTime()){
+                for (BApplyBook b:dataList){
+                    b.setfState(String.valueOf(ApplyBookEnum.student.getCode()));
+                    bApplyBookService.updateByPrimaryKeySelective(b);
+                }
+            }
             if (dataList.size()>0) {
                 return new PageInfo<>(dataList);
             }

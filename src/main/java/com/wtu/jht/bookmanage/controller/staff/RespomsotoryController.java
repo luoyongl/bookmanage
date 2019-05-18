@@ -1,9 +1,11 @@
 package com.wtu.jht.bookmanage.controller.staff;
 
+import com.wtu.jht.bookmanage.modal.BApplyBook;
 import com.wtu.jht.bookmanage.modal.BResponsitory;
 import com.wtu.jht.bookmanage.modal.TUser;
 import com.wtu.jht.bookmanage.openapi.constant.Constant;
 import com.wtu.jht.bookmanage.openapi.pojo.ManageResult;
+import com.wtu.jht.bookmanage.service.BApplyBookService;
 import com.wtu.jht.bookmanage.service.BResponsitoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +31,13 @@ public class RespomsotoryController {
 
     private final BResponsitoryService bResponsitoryService;
 
+    private  final BApplyBookService bApplyBookService;
+
     @Autowired
-    public RespomsotoryController(BResponsitoryService bResponsitoryService){
+    public RespomsotoryController(BResponsitoryService bResponsitoryService,
+                                  BApplyBookService bApplyBookService){
         this.bResponsitoryService=bResponsitoryService;
+        this.bApplyBookService=bApplyBookService;
     }
 
 
@@ -61,11 +67,23 @@ public class RespomsotoryController {
 
     @RequestMapping("/updateRes")
     @ResponseBody
-    public ManageResult edit(Integer fNumber,Integer addNumber,Integer fId){
+    public ManageResult edit(@RequestParam(value = "fNumber",required = false,defaultValue = "0") Integer fNumber,
+                             @RequestParam(value = "addNumber",required = false,defaultValue = "0") Integer addNumber,
+                             @RequestParam(value = "fId",required = false,defaultValue = "0")  Integer fId,
+                             Integer fBookId){
         BResponsitory bResponsitory=new BResponsitory();
-        bResponsitory.setfId(fId);
-        bResponsitory.setfNumber(fNumber+addNumber);
-        return ManageResult.ok(bResponsitoryService.updateByPrimaryKeySelective(bResponsitory));
+        BApplyBook bApplyBook=new BApplyBook();
+        bApplyBook=bApplyBookService.selectByPrimaryKey(fBookId);
+        if (bResponsitoryService.selectByBookId(Integer.valueOf(bApplyBook.getfBookId()))){
+            bResponsitory.setfId(fId);
+            bResponsitory.setfNumber(fNumber+addNumber);
+            bResponsitoryService.updateByPrimaryKeySelective(bResponsitory);
+        }else {
+            bResponsitory.setfNumber(addNumber);
+            bResponsitory.setfBookId(Integer.valueOf(bApplyBook.getfBookId()));
+            bResponsitoryService.insertSelective(bResponsitory);
+        }
+        return ManageResult.ok();
     }
 
 }

@@ -6,6 +6,7 @@ import com.wtu.jht.bookmanage.service.BApplyBookService;
 import com.wtu.jht.bookmanage.service.BBookListService;
 import com.wtu.jht.bookmanage.service.TDictionaryService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +40,9 @@ public class BaseDateController {
         this.tDictionaryService=tDictionaryService;
     }
     @GetMapping
-    public String goBathDate(){
+    public String goBathDate(Model model){
+        List<TDictionary> tDictionaryList = tDictionaryService.selectListByCriteria("bookdate");
+        model.addAttribute("bookdate",tDictionaryList.get(0));
         return "manager/bathDate";
     }
 

@@ -24,7 +24,7 @@
     <button class="layui-btn" data-type="reload">搜索</button>
 </div>
 <div class="" style="float: right;margin-right: 50px;color: red;">
-    <span class="">教材选取截止时间：</span>
+    <span class="">教材选取截止时间：${bookdate.fDictionaryContent}</span>
 </div>
 <%--图书列表展示--%>
 <table class="layui-table"  lay-filter="test" id="bookList"></table>

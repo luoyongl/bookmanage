@@ -88,7 +88,9 @@ public class BookListController extends BaseController {
      * @param session 获取当前用户
      */
     @RequestMapping("/applyresult")
-    public String goApplyList(HttpSession session) {
+    public String goApplyList(HttpSession session,Model model) {
+        List<TDictionary> tDictionaryList = tDictionaryService.selectListByCriteria("bookdate");
+        model.addAttribute("bookdate",tDictionaryList.get(0));
         return "teacher/applyResult";
     }
 
@@ -96,16 +98,16 @@ public class BookListController extends BaseController {
     @ResponseBody
     public ManageResult showApplyList(@RequestParam(defaultValue = "1", required = false) Integer page,
                                       @RequestParam(defaultValue = "10", required = false) Integer limit,
-                                      @RequestParam(defaultValue = "", required = false) String searchText,
-                                      @RequestParam(defaultValue = "desc", required = false) String sortOrder,
-                                      @RequestParam(defaultValue = "f_id", required = false) String sortName,
+                                      @RequestParam(defaultValue = "", required = false) String keyword,
                                       HttpSession session) {
-
+        List<TDictionary> tDictionaryList = tDictionaryService.selectListByCriteria("bookdate");
         TUser tUser = (TUser) session.getAttribute(Constant.CURRENT_USER);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageNumber", page);
         paramMap.put("pageSize", limit);
         paramMap.put("currentUser", tUser.getfId());
+        paramMap.put("keyword", keyword);
+        paramMap.put("bookdate",tDictionaryList.get(0).getfDictionaryContent());
         return ManageResult.ok(bApplyBookService.QueryPage(paramMap));
     }
 
@@ -114,25 +116,21 @@ public class BookListController extends BaseController {
      *
      * @param page
      * @param limit
-     * @param searchText
-     * @param sortOrder
-     * @param sortName
      * @return
      */
     @RequestMapping("/showBookList")
     @ResponseBody
     public ManageResult showBookList(@RequestParam(defaultValue = "1", required = false) Integer page,
                                      @RequestParam(defaultValue = "10", required = false) Integer limit,
-                                     @RequestParam(defaultValue = "", required = false) String searchText,
-                                     @RequestParam(defaultValue = "desc", required = false) String sortOrder,
-                                     @RequestParam(defaultValue = "f_id", required = false) String sortName,
                                      @RequestParam(defaultValue = "type", required = false) Integer type,
+                                     @RequestParam(defaultValue = "", required = false) String keyword,
                                      HttpSession session) {
         TUser tUser = (TUser) session.getAttribute(Constant.CURRENT_USER);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageNumber", page);
         paramMap.put("pageSize", limit);
         paramMap.put("type", type);
+        paramMap.put("keyword", keyword);
         paramMap.put("currentUser", tUser.getfId());
         return ManageResult.ok(bBookListService.queryPageByParam(paramMap));
     }

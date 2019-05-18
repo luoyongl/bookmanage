@@ -61,6 +61,9 @@
         <if test="currentUser!=null and currentUser!=''">
             AND b_a.f_user_id=${currentUser}
         </if>
+        <if test="keyword!=null and keyword!=''">
+            AND b_b.f_book_name like concat("%", #{keyword},"%")
+        </if>
         GROUP BY b_a.f_id
     </select>
 
