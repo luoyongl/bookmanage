@@ -62,7 +62,12 @@
             AND b_a.f_user_id=${currentUser}
         </if>
         <if test="keyword!=null and keyword!=''">
-            AND b_b.f_book_name like concat("%", #{keyword},"%")
+            AND (b_b.f_book_name like concat("%", #{keyword},"%") or
+            b_b.f_book_isbn like concat("%", #{keyword},"%") or
+            b_b.f_book_publish like concat("%", #{keyword},"%") or
+            b_b.f_book_edtion like concat("%", #{keyword},"%") or
+            b_b.f_book_editor like concat("%", #{keyword},"%")
+            )
         </if>
         GROUP BY b_a.f_id
     </select>
