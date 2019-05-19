@@ -21,7 +21,7 @@
     <style>
         iframe {
             width: 100%;
-            height: 550px;
+            height: 650px;
         }
         .selected{
             background-color: rgba(0, 0, 0, 0.3)!important;
@@ -37,9 +37,8 @@
         <li class="layui-nav-item">
             <a href="javascript:;">${sessionScope.currentUser.realName}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a href="">个人信息</a></dd>
-                <dd><a href="">切换帐号</a></dd>
-                <dd><a href="${ctx}/account/logout">退出</a></dd>
+                <dd><a href="">修改密码</a></dd>
+<%--                <dd><a href="${ctx}/account/logout">退出</a></dd>--%>
             </dl>
         </li>
         <li class="layui-nav-item"><a href="${ctx}/account/logout">退出</a></li>

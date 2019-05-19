@@ -3,7 +3,6 @@ package com.wtu.jht.bookmanage.modal.vo;
 import com.wtu.jht.bookmanage.modal.BResponsitory;
 
 /**
- * @author ：LY
  * @date ：Created in 2019/5/15 11:41
  * @description：
  * @modified By：

@@ -38,6 +38,7 @@ public class BApplyBookVO extends BApplyBook implements Serializable {
 
     private String fRemark;
 
+    private String fBookUrl;
 
     private String fList;
 
@@ -187,5 +188,13 @@ public class BApplyBookVO extends BApplyBook implements Serializable {
 
     public void setEvaId(Integer evaId) {
         EvaId = evaId;
+    }
+
+    public String getfBookUrl() {
+        return fBookUrl;
+    }
+
+    public void setfBookUrl(String fBookUrl) {
+        this.fBookUrl = fBookUrl;
     }
 }

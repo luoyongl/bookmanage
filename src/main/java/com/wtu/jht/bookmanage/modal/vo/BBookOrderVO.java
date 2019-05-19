@@ -3,7 +3,6 @@ package com.wtu.jht.bookmanage.modal.vo;
 import com.wtu.jht.bookmanage.modal.BBookOrder;
 
 /**
- * @author ：LY
  * @date ：Created in 2019/5/11 13:02
  * @description：
  * @modified By：

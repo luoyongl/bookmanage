@@ -10,7 +10,6 @@ import com.wtu.jht.bookmanage.service.BEvaluteService;
 import org.springframework.stereotype.Service;
 
 /**
- * @author ：LY
  * @date ：Created in 2019/5/13 11:45
  * @description：
  * @modified By：

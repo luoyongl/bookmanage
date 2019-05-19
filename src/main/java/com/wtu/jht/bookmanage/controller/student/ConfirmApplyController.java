@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author ：LY
  * @date ：Created in 2019/5/10 14:22
  * @description：学生确定选书控制器
  * @modified By：
@@ -124,7 +123,6 @@ public class ConfirmApplyController {
 
 
     /**
-     * create by: LY
      * description: 删除
      * create time: 2019/5/5 19:55
      * @Param   * @param null

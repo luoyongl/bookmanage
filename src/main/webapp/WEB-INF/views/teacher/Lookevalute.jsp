@@ -36,7 +36,7 @@
 </div>
 
 <div style="width: 500px;height:500px;float: left">
-    <div id="_pie" style="width: 100%;height: 40%"></div>
+    <div id="_pie" style="width: 100%;height: 50%"></div>
     <div id="sum" style="width: 100%;height: 65%"></div>
 </div>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
@@ -104,7 +104,8 @@
     echarts.init(document.getElementById('_pie')).setOption({
         title: {
             text: '评价信息占比',
-            x: 'center',
+            x: 'right',
+            top:-5,
             textStyle: {
                 fontWeight: "normal",
                 color: "#fff",
@@ -172,6 +173,7 @@
             text: '2018 vs 2019',
             subtext: '',
             x: 'right',
+            top: 15,
 
         },
         tooltip : {

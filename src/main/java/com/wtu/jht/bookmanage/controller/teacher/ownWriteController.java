@@ -4,16 +4,19 @@ package com.wtu.jht.bookmanage.controller.teacher;
 import com.wtu.jht.bookmanage.enums.ApplyBookEnum;
 import com.wtu.jht.bookmanage.modal.BApplyBook;
 import com.wtu.jht.bookmanage.modal.BBookList;
+import com.wtu.jht.bookmanage.modal.TDictionary;
 import com.wtu.jht.bookmanage.modal.TUser;
 import com.wtu.jht.bookmanage.openapi.PropertiesUtil;
 import com.wtu.jht.bookmanage.openapi.constant.Constant;
 import com.wtu.jht.bookmanage.openapi.pojo.ManageResult;
 import com.wtu.jht.bookmanage.service.BApplyBookService;
 import com.wtu.jht.bookmanage.service.BBookListService;
+import com.wtu.jht.bookmanage.service.TDictionaryService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 自编教材印刷控制层
@@ -35,14 +40,18 @@ public class ownWriteController {
 
     private final BApplyBookService bApplyBookService;
 
+    private final TDictionaryService tDictionaryService;
+
     private String uploadFolder = PropertiesUtil.getProperty("file.uploadFolder");
 
 
     @Autowired
     public ownWriteController(BBookListService bBookListService,
-                              BApplyBookService bApplyBookService) {
+                              BApplyBookService bApplyBookService,
+                              TDictionaryService tDictionaryService) {
         this.bBookListService = bBookListService;
         this.bApplyBookService = bApplyBookService;
+        this.tDictionaryService=tDictionaryService;
     }
 
     /**
@@ -51,7 +60,18 @@ public class ownWriteController {
      * @return
      */
     @RequestMapping("/ownWrite")
-    public String goBookList() {
+    public String goBookList(Model model) {
+        List<TDictionary> collegeList = new ArrayList<>();
+        List<TDictionary> college = tDictionaryService.selectListByCriteria("college");
+        for (TDictionary t : college) {
+            if (t.getfParentNode() != 0) {
+                collegeList.add(t);
+            }
+        }
+        List<TDictionary> courseList = tDictionaryService.selectListByCriteria("course");
+
+        model.addAttribute("collegeList", collegeList);
+        model.addAttribute("courseList", courseList);
         return "teacher/ownWrite";
     }
 

@@ -24,7 +24,6 @@ import java.util.Map;
  * 教用教材领用控制层
  * 查询图书清单
  *
- * @author LY
  */
 
 @Controller

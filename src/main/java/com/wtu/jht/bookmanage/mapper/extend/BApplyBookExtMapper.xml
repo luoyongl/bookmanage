@@ -31,6 +31,7 @@
         <result column="real_name" property="username" jdbcType="VARCHAR"/>
         <result column="choose_id" property="chooseId" jdbcType="INTEGER"/>
         <result column="number" property="number" jdbcType="INTEGER"/>
+        <result column="f_book_url" property="fBookUrl" jdbcType="VARCHAR" />
 
         <result column="f_grade" property="fGrade" jdbcType="INTEGER" />
         <result column="f_remark" property="fRemark" jdbcType="VARCHAR" />
@@ -84,6 +85,7 @@
         b_b.f_book_editor,
         b_b.f_book_number,
         b_b.f_book_iswrite,
+        b_b.f_book_url,
         t_u.`level`,
         t_u.`real_name`
         from b_apply_book b_a

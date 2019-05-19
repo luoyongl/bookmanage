@@ -26,7 +26,6 @@ import java.util.Set;
 /**
  * @className: AccountController
  * 用户登录
- * @author LY
  */
 
 @Controller

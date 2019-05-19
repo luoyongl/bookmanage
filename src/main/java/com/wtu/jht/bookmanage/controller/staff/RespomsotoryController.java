@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author ：LY
  * @date ：Created in 2019/5/15 11:34
  * @description：库存管理
  * @modified By：

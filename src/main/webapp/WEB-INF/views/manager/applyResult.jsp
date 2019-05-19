@@ -31,7 +31,7 @@
 <script type="text/html" id="myToolbarDemo">
     <div class="layui-btn-container">
         {{# if(d.fBookIswrite == true){ }}
-        <button class="layui-btn layui-btn-sm" lay-event="">查看附件</button>
+        <a href="{{d.fBookUrl}}" target="view_window" class="layui-btn layui-btn-sm" style="color: #FFFFFF">查看附件</a>
         <button class="layui-btn layui-btn-sm " lay-event="update">通过</button>
         <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="delete">不通过</button>
         {{# } else{ }}

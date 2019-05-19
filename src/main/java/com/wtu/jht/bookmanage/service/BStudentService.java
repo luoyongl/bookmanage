@@ -4,7 +4,6 @@ import com.wtu.jht.bookmanage.modal.BStudentBook;
 import com.wtu.jht.bookmanage.openapi.service.api.ParentService;
 
 /**
- * @author ：LY
  * @date ：Created in 2019/5/10 16:25
  * @description：
  * @modified By：

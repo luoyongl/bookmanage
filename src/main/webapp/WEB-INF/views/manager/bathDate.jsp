@@ -123,9 +123,9 @@
 
         var layDATE = function () {
             laydate.render({
-                elem: '#date'
-                , type: 'datetime'
-                ,format:'yyyy-MM-dd HH:mm:ss'
+                elem: '#date',
+                type: 'datetime',
+                format:'yyyy-MM-dd HH:mm:ss'
                 <%--, value: new Date((${bookdate.fDictionaryContent}).replace(/-/g,"/"))--%>
                 <%--,value:${bookdate.fDictionaryContent}--%>
             });

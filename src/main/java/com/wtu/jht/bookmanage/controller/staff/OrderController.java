@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author ：LY
  * @date ：Created in 2019/5/11 10:22
  * @description：订单控制器
  * @modified By：
@@ -70,7 +69,7 @@ public class OrderController {
 
 
     /**
-     * 发货
+     * 教材出库
      * @param
      * @return
      */

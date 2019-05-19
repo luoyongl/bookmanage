@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Set;
 
 /**
- * @author huangjiakui
  * @ClassName: AuthenticationRealm
  * @Description: 权限认证
  * @date 2018年12月04日

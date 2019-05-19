@@ -127,7 +127,7 @@ public class BookManageController {
     }
 
     /**
-     * 审核不通过 实际上是更新删除标志
+     * 审核不通过
      * @param fId
      * @return
      */
