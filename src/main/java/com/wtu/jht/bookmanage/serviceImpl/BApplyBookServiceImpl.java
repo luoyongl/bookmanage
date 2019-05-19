@@ -74,8 +74,10 @@ public class BApplyBookServiceImpl extends ParentServiceImpl<BApplyBook> impleme
             String bookDte=(String)paramMap.get("bookdate");
             if (sdf.parse(bookDte).getTime()<sdf.parse(currentTime).getTime()){
                 for (BApplyBook b:dataList){
-                    b.setfState(String.valueOf(ApplyBookEnum.student.getCode()));
-                    bApplyBookService.updateByPrimaryKeySelective(b);
+                    if (Integer.valueOf(b.getfState())<3){
+                        b.setfState(String.valueOf(ApplyBookEnum.student.getCode()));
+                        bApplyBookService.updateByPrimaryKeySelective(b);
+                    }
                 }
             }
             if (dataList.size()>0) {
