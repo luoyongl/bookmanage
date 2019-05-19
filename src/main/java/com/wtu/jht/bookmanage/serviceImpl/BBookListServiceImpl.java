@@ -36,7 +36,7 @@ public class BBookListServiceImpl extends ParentServiceImpl<BBookList> implement
                 example.createCriteria().andFBookNameLike((String) paramMap.get("keyword"));
             }
             if((Integer) paramMap.get("type")==1){
-                example.createCriteria().andFDeleteFlagEqualTo(false);
+                example.createCriteria().andFDeleteFlagEqualTo(false).andFBookIswriteEqualTo(false);
             }else {
                 example.createCriteria().andFDeleteFlagEqualTo(false).andFWriteIdEqualTo((Integer) paramMap.get("currentUser"));
             }
