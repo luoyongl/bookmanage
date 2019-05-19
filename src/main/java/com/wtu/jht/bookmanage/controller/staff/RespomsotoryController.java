@@ -73,15 +73,16 @@ public class RespomsotoryController {
                              Integer fBookId){
         BResponsitory bResponsitory=new BResponsitory();
         BApplyBook bApplyBook=new BApplyBook();
-        bApplyBook=bApplyBookService.selectByPrimaryKey(fBookId);
-        if (bResponsitoryService.selectByBookId(Integer.valueOf(bApplyBook.getfBookId()))){
-            bResponsitory.setfId(fId);
-            bResponsitory.setfNumber(fNumber+addNumber);
-            bResponsitoryService.updateByPrimaryKeySelective(bResponsitory);
-        }else {
+
+        if (fBookId!=null){
+            bApplyBook=bApplyBookService.selectByPrimaryKey(fBookId);
             bResponsitory.setfNumber(addNumber);
             bResponsitory.setfBookId(Integer.valueOf(bApplyBook.getfBookId()));
             bResponsitoryService.insertSelective(bResponsitory);
+        }else {
+            bResponsitory.setfId(fId);
+            bResponsitory.setfNumber(fNumber+addNumber);
+            bResponsitoryService.updateByPrimaryKeySelective(bResponsitory);
         }
         return ManageResult.ok();
     }
