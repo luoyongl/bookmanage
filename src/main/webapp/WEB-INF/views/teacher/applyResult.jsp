@@ -79,8 +79,7 @@
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <%@include file="../common/common_js.jsp" %>
-<script type="text/html" id="myToolbarDemo">
-</script>
+
 <script type="text/html" id="myToolbarDemo">
     <div class="layui-btn-container">
         {{# if(d.fState == '1'){ }}
@@ -103,11 +102,7 @@
         {{# } else if(d.fState=="2"){ }}
         <span class="layui-badge layui-bg-green">学生待选取,已选:{{d.number}}</span>
         {{# } else if(d.fState=="3"){ }}
-                {{# if(d.number == '0'){ }}
-                <span class="layui-badge layui-bg-red">选取结束,已选:{{d.number}}</span>
-                {{# } else{ }}
-                <span class="layui-badge layui-bg-red">选取结束,已选:{{d.number}}</span>
-                {{# } }}
+        <span class="layui-badge layui-bg-red">选取结束,已选:{{d.number}}</span>
         {{# } else if(d.fState=="7"){}}
         <span class="layui-badge layui-bg-gray">已结束,已选:{{d.number}}</span>
         {{# } else if(d.fState=="8"){}}
