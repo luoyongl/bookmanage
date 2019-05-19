@@ -342,11 +342,10 @@
     <div class="layui-form-item">
         <label class="layui-form-label">选用班级</label>
         <div class="layui-input-block">
-            <select name="fClass" lay-filter="aihao">
-                <option>软件11501</option>
-                <option>软件11502</option>
-                <option>软件11503</option>
-                <option>软件11504</option>
+            <select name="fClass" xm-select>
+                <c:forEach items="${collegeList}" var="college">
+                    <option>${college.fDictionaryContent}</option>
+                </c:forEach>
             </select>
         </div>
     </div>
@@ -354,7 +353,8 @@
         <label class="layui-form-label">学年学期</label>
         <div class="layui-input-block">
             <select name="fApplyYear" lay-verify="required">
-
+                <option>2018-2019年一学期</option>
+                <option>2018-2019年二学期</option>
             </select>
         </div>
     </div>
