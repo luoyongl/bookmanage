@@ -41,7 +41,7 @@ public class BBookListServiceImpl extends ParentServiceImpl<BBookList> implement
                 }
 
             }else {
-                if (paramMap.get("keyword")!="" && paramMap.get("keyword")!=null){
+                if (!paramMap.get("keyword").equals("") && paramMap.get("keyword")!=null){
                     example.createCriteria().andFDeleteFlagEqualTo(false).andFWriteIdEqualTo((Integer) paramMap.get("currentUser")).andFBookNameLike((String) paramMap.get("keyword"));
                 }else {
                     example.createCriteria().andFDeleteFlagEqualTo(false).andFWriteIdEqualTo((Integer) paramMap.get("currentUser"));
