@@ -32,13 +32,21 @@ public class BBookListServiceImpl extends ParentServiceImpl<BBookList> implement
 
         try {
             BBookListExample example=new BBookListExample();
-            if (paramMap.get("keyword")!="" && paramMap.get("keyword")!=null){
-                example.createCriteria().andFBookNameLike((String) paramMap.get("keyword"));
-            }
+
             if((Integer) paramMap.get("type")==1){
-                example.createCriteria().andFDeleteFlagEqualTo(false).andFBookIswriteEqualTo(false);
+                if (!paramMap.get("keyword").equals("") && paramMap.get("keyword")!=null){
+                    example.createCriteria().andFDeleteFlagEqualTo(false).andFBookIswriteEqualTo(false).andFBookNameLike((String) paramMap.get("keyword"));
+                }else {
+                    example.createCriteria().andFDeleteFlagEqualTo(false).andFBookIswriteEqualTo(false);
+                }
+
             }else {
-                example.createCriteria().andFDeleteFlagEqualTo(false).andFWriteIdEqualTo((Integer) paramMap.get("currentUser"));
+                if (paramMap.get("keyword")!="" && paramMap.get("keyword")!=null){
+                    example.createCriteria().andFDeleteFlagEqualTo(false).andFWriteIdEqualTo((Integer) paramMap.get("currentUser")).andFBookNameLike((String) paramMap.get("keyword"));
+                }else {
+                    example.createCriteria().andFDeleteFlagEqualTo(false).andFWriteIdEqualTo((Integer) paramMap.get("currentUser"));
+                }
+
             }
 
             PageHelper.startPage((Integer) paramMap.get("pageNumber"),(Integer) paramMap.get("pageSize"));
