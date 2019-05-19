@@ -57,6 +57,12 @@
         {field: 'fBookUrl', title: '附件查看',toolbar: '#fileToolbarDemo'},
         {field: '', title: '操作', toolbar: '#myToolbarDemo', align: 'center'}
     ]];
+
+    layui.config({
+        base: '${ctx}/static/layui/'
+    }).extend({
+        formSelects: 'formSelects'
+    });
     layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function () {
         var laydate = layui.laydate //日期
             , laypage = layui.laypage //分页
