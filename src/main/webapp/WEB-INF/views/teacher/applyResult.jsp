@@ -107,8 +107,10 @@
         <span class="layui-badge layui-bg-gray">已结束,已选:{{d.number}}</span>
         {{# } else if(d.fState=="8"){}}
         <span class="layui-badge layui-bg-green">教材备货中</span>
-        {{# } else if(d.fState=="9"){}}
+        {{# } else if(d.fState=="9"){ }}
         <span class="layui-badge layui-bg-green">可领取</span>
+        {{# } else if(d.fState=="6"){ }}
+        <span class="layui-badge layui-bg-gray">不通过</span>
         {{# } }}
     </div>
 </script>

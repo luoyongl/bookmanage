@@ -38,17 +38,31 @@
         {{# } }}
     </div>
 </script>
+<script type="text/html" id="formTime">
+    {{  dateFormat(d.fUpdateTime) }}
+</script>
+
+<script type="text/html" id="stateToolbarDemo">
+    <div class="layui-btn-container">
+        {{# if(d.fState == '6'){ }}
+        <span class="layui-badge layui-bg-orange">不通过</span>
+        {{# } else{ }}
+        <span class="layui-badge layui-bg-green">通过</span>
+        {{# } }}
+    </div>
+</script>
 <script>
     var cols = [[
         {field: 'fBookName', title: '图书名称', sort: 'true'},
         {field: 'username', title: '申请人', sort: 'true',width:80},
         {field: 'college', title: '申请单位', sort: 'true'},
         {field: 'fCourseName', title: '课程名称', sort: 'true'},
-        {field: 'fCourseAttribute', title: '课程性质', sort: 'true'},
+        {field: 'fCourseAttribute', title: '课程性质', sort: 'true',width:80},
         {field: 'fClass', title: '选用班级', sort: 'true'},
         {field: 'fApplyYear', title: '学年学期', sort: 'true'},
         {field: 'fBookIswrite', title: '是否自编', toolbar: '#iswriteToolbarDemo',sort: 'true',width: 100,align:'center、、'},
-        {field: 'fUpdateTime', title: '审核时间', sort: 'true'},
+        {field: 'fState', title: '审核结果', toolbar: '#stateToolbarDemo',sort: 'true', width: 100},
+        {field: 'fUpdateTime', title: '审核时间', sort: 'true',templet: '#formTime'},
     ]];
     layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function () {
         var laydate = layui.laydate //日期

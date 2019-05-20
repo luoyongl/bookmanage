@@ -71,7 +71,7 @@
             , form = layui.form
 
 
-        table.render({
+        var $table=table.render({
             elem: '#applyList',
             url: '${ctx}/manager/review/showApplyResult',
             cols: cols,
@@ -128,7 +128,7 @@
             }, function(index, layero){
                 $.getJSON("${ctx}/manager/review/update",{fId:e.fId},function (result) {
                     layer.closeAll();
-                    table.reload();
+                    $table.reload();
                     layer.msg(result.msg);
                 })
             }, function(index){
@@ -154,7 +154,7 @@
                             if (result.status == 200) {
                                 $("form").css("display", "none");
                                 layer.closeAll();
-                                table.reload();
+                                $table.reload();
                                 layer.msg(result.msg)
                             }
                         }

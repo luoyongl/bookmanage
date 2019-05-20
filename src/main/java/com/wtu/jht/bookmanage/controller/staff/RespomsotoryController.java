@@ -72,15 +72,16 @@ public class RespomsotoryController {
                              Integer fBookId){
         BResponsitory bResponsitory=new BResponsitory();
         BApplyBook bApplyBook=new BApplyBook();
-
-        if (fBookId!=null){
+        //这里的bookid 为申请表id
+        bResponsitory=bResponsitoryService.selectByBookId(Integer.valueOf(bApplyBookService.selectByPrimaryKey(fBookId).getfBookId()));
+        if (bResponsitory==null){
             bApplyBook=bApplyBookService.selectByPrimaryKey(fBookId);
             bResponsitory.setfNumber(addNumber);
             bResponsitory.setfBookId(Integer.valueOf(bApplyBook.getfBookId()));
             bResponsitoryService.insertSelective(bResponsitory);
         }else {
-            bResponsitory.setfId(fId);
-            bResponsitory.setfNumber(fNumber+addNumber);
+            Integer resnum=bResponsitory.getfNumber()+addNumber;
+            bResponsitory.setfNumber(resnum);
             bResponsitoryService.updateByPrimaryKeySelective(bResponsitory);
         }
         return ManageResult.ok();

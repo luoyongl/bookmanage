@@ -28,5 +28,6 @@
        from b_responsitory b_res
        left  join b_book_list b_b
        on b_res.f_book_id=b_b.f_id
+       group by b_res.f_id
     </select>
 </mapper>

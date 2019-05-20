@@ -63,13 +63,14 @@ public class BResponsitoryServiceImpl extends ParentServiceImpl<BResponsitory> i
 
 
     @Override
-    public Boolean selectByBookId(Integer fBookId) {
+    public BResponsitory selectByBookId(Integer fBookId) {
        BResponsitoryExample example=new BResponsitoryExample();
        example.createCriteria().andFBookIdEqualTo(fBookId);
-       if (bResponsitoryMapper.selectByExample(example).size()>0){
-           return true;
+       List<BResponsitory>list=bResponsitoryMapper.selectByExample(example);
+       if (list.size()>0){
+           return list.get(0);
        }else {
-           return false;
+           return null;
        }
     }
 

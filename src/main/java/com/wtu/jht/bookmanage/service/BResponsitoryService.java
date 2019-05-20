@@ -21,5 +21,5 @@ public interface BResponsitoryService extends ParentService<BResponsitory> {
 
     PageInfo<BResponsitoryVO> List(Map<String, Object> paramMap);
 
-    Boolean selectByBookId(Integer fBookId);
+    BResponsitory selectByBookId(Integer fBookId);
 }
